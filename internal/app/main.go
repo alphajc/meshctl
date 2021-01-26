@@ -116,6 +116,9 @@ func (cs *Clientset) CheckAppVersion(appVersion *AppVersion) (err error) {
 
 // AddAppVersion to add a new version
 func (cs *Clientset) AddAppVersion(appVersion *AppVersion) (err error) {
+    if err = cs.CheckAppVersion(appVersion); err != nil {
+        return
+    }
     subsetName := strings.Replace(appVersion.Version, ".", "-", -1)
     dr, err := cs.ic.NetworkingV1beta1().DestinationRules(appVersion.Namespace).Get(context.TODO(), appVersion.Service, metav1.GetOptions{})
     dr.Spec.Subsets = append(
