@@ -39,6 +39,7 @@ type AppVersion struct {
 	Service   string
 	Version   string
 	Subset    string
+    FlowMark  string
 }
 
 // IsDNS1123Label tests for a string that conforms to the definition of a label in
@@ -181,7 +182,7 @@ func (cs *Clientset) AddAppVersion(appVersion *AppVersion) (err error) {
 				Match: []*v1beta1.HTTPMatchRequest{
 					{
 						Headers: map[string]*v1beta1.StringMatch{
-							"x-weike-forward": {
+							appVersion.FlowMark: {
 								MatchType: &v1beta1.StringMatch_Exact{
 									Exact: appVersion.Version,
 								},
